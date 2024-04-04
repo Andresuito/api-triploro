@@ -1,0 +1,22 @@
+config:
+  target: "http://localhost:8000/api/v1"
+  phases:
+    - duration: 60
+      arrivalRate: 5
+      rampTo: 10
+      name: "Warm up"
+    - duration: 60
+      arrivalRate: 10
+      rampTo: 50
+      name: "Ramp up load"
+    - duration: 300
+      arrivalRate: 50
+      name: "Peak load"
+scenarios:
+  - flow:
+      - loop:
+          - get:
+              url: "/profile/profile/{{ $loopCount }}"
+              headers:
+                Authorization: "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjMsImlhdCI6MTcxMTc0NDk4MywiZXhwIjoxNzE0MzM2OTgzfQ.I2-y7tdHtwVG0_yECBAJPwPtH9W0Q0Sg6nps0YVvLp8"
+                count: 10
