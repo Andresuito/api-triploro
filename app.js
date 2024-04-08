@@ -46,7 +46,7 @@ app.use(notFoundHandler);
 const port = process.env.PORT || 8000;
 
 sequelize
-  .sync({ force: true })
+  .sync()
   .then(() => {
     console.log("Model synchronized with the database");
     addCountries();
