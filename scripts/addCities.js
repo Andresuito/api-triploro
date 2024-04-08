@@ -7,7 +7,7 @@ async function addCities() {
     const portugal = await Country.findOne({ where: { name: "Portugal" } });
 
     await Destination.findOrCreate({
-      where: { name: "Madrid" },
+      where: { name: "madrid" },
       defaults: {
         description: "Capital de España",
         imageUrl: "URL_de_la_imagen_de_Madrid",
@@ -18,7 +18,7 @@ async function addCities() {
     });
 
     await Destination.findOrCreate({
-      where: { name: "Barcelona" },
+      where: { name: "barcelona" },
       defaults: {
         description: "Ciudad cosmopolita y cultural",
         imageUrl: "URL_de_la_imagen_de_Barcelona",
@@ -29,7 +29,7 @@ async function addCities() {
     });
 
     await Destination.findOrCreate({
-      where: { name: "Valencia" },
+      where: { name: "valencia" },
       defaults: {
         description: "Famosa por la Ciudad de las Artes y las Ciencias",
         imageUrl: "URL_de_la_imagen_de_Valencia",
@@ -40,7 +40,7 @@ async function addCities() {
     });
 
     await Destination.findOrCreate({
-      where: { name: "Sevilla" },
+      where: { name: "sevilla" },
       defaults: {
         description: "Conocida por su arquitectura y flamenco",
         imageUrl: "URL_de_la_imagen_de_Sevilla",
@@ -51,7 +51,7 @@ async function addCities() {
     });
 
     await Destination.findOrCreate({
-      where: { name: "Málaga" },
+      where: { name: "malaga" },
       defaults: {
         description: "Ciudad costera en la Costa del Sol",
         imageUrl: "URL_de_la_imagen_de_Málaga",
@@ -62,7 +62,7 @@ async function addCities() {
     });
 
     await Destination.findOrCreate({
-      where: { name: "Bilbao" },
+      where: { name: "bilbao" },
       defaults: {
         description: "Conocida por el Museo Guggenheim",
         imageUrl: "URL_de_la_imagen_de_Bilbao",
@@ -73,7 +73,7 @@ async function addCities() {
     });
 
     await Destination.findOrCreate({
-      where: { name: "Granada" },
+      where: { name: "granada" },
       defaults: {
         description: "Famosa por la Alhambra",
         imageUrl: "URL_de_la_imagen_de_Granada",
@@ -84,7 +84,7 @@ async function addCities() {
     });
 
     await Destination.findOrCreate({
-      where: { name: "Zaragoza" },
+      where: { name: "zaragoza" },
       defaults: {
         description: "Ciudad histórica a orillas del río Ebro",
         imageUrl: "URL_de_la_imagen_de_Zaragoza",
@@ -95,7 +95,7 @@ async function addCities() {
     });
 
     await Destination.findOrCreate({
-      where: { name: "Palma de Mallorca" },
+      where: { name: "palma de mallorca" },
       defaults: {
         description: "Capital de las Islas Baleares",
         imageUrl: "URL_de_la_imagen_de_Palma_de_Mallorca",
@@ -106,7 +106,7 @@ async function addCities() {
     });
 
     await Destination.findOrCreate({
-      where: { name: "Lisboa" },
+      where: { name: "lisboa" },
       defaults: {
         description: "Capital de Portugal",
         imageUrl: "URL_de_la_imagen_de_Lisboa",
@@ -117,7 +117,7 @@ async function addCities() {
     });
 
     await Destination.findOrCreate({
-      where: { name: "Oporto" },
+      where: { name: "oporto" },
       defaults: {
         description: "Famosa por el vino de Oporto",
         imageUrl: "URL_de_la_imagen_de_Oporto",
@@ -128,7 +128,7 @@ async function addCities() {
     });
 
     await Destination.findOrCreate({
-      where: { name: "Faro" },
+      where: { name: "faro" },
       defaults: {
         description: "Destino turístico en el Algarve",
         imageUrl: "URL_de_la_imagen_de_Faro",
@@ -139,7 +139,7 @@ async function addCities() {
     });
 
     await Destination.findOrCreate({
-      where: { name: "Coímbra" },
+      where: { name: "coimbra" },
       defaults: {
         description: "Famosa por su universidad medieval",
         imageUrl: "URL_de_la_imagen_de_Coímbra",
@@ -150,7 +150,7 @@ async function addCities() {
     });
 
     await Destination.findOrCreate({
-      where: { name: "Braga" },
+      where: { name: "braga" },
       defaults: {
         description: "Ciudad religiosa con una rica historia",
         imageUrl: "URL_de_la_imagen_de_Braga",
@@ -161,7 +161,7 @@ async function addCities() {
     });
 
     await Destination.findOrCreate({
-      where: { name: "Aveiro" },
+      where: { name: "aveiro" },
       defaults: {
         description: "Conocida como la Venecia de Portugal",
         imageUrl: "URL_de_la_imagen_de_Aveiro",
@@ -172,7 +172,7 @@ async function addCities() {
     });
 
     await Destination.findOrCreate({
-      where: { name: "Évora" },
+      where: { name: "evora" },
       defaults: {
         description: "Ciudad con un impresionante centro histórico",
         imageUrl: "URL_de_la_imagen_de_Évora",
@@ -183,7 +183,7 @@ async function addCities() {
     });
 
     await Destination.findOrCreate({
-      where: { name: "Guimarães" },
+      where: { name: "guimarães" },
       defaults: {
         description: "Cuna de la nación portuguesa",
         imageUrl: "URL_de_la_imagen_de_Guimarães",
