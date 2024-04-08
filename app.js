@@ -11,6 +11,8 @@ const addCities = require("./scripts/addCities");
 const User = require("./src/models/User");
 const Country = require("./src/models/Country");
 const Destination = require("./src/models/Destinations");
+const Itinerary = require("./src/models/Itinerary");
+const FavoriteItinerary = require("./src/models/FavoriteItinerary");
 
 const {
   errorHandler,
@@ -44,7 +46,7 @@ app.use(notFoundHandler);
 const port = process.env.PORT || 8000;
 
 sequelize
-  .sync((force = true))
+  .sync({ force: true })
   .then(() => {
     console.log("Model synchronized with the database");
     addCountries();
