@@ -40,7 +40,7 @@ async function addCities() {
     });
 
     await Destination.findOrCreate({
-      where: { name: "sevilla" },
+      where: { name: "seville" },
       defaults: {
         description: "Conocida por su arquitectura y flamenco",
         imageUrl: "URL_de_la_imagen_de_Sevilla",
@@ -106,7 +106,7 @@ async function addCities() {
     });
 
     await Destination.findOrCreate({
-      where: { name: "lisboa" },
+      where: { name: "lisbon" },
       defaults: {
         description: "Capital de Portugal",
         imageUrl: "URL_de_la_imagen_de_Lisboa",
