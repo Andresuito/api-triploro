@@ -6,6 +6,8 @@ const cookieParser = require("cookie-parser");
 const sequelize = require("./config/sequelizeConfig");
 const addCountries = require("./scripts/addCountries");
 const addCities = require("./scripts/addCities");
+const addTags = require("./scripts/addTags");
+const addTagsToDestinations = require("./scripts/addTagsToDestinations.js");
 
 /* Models */
 const User = require("./src/models/User");
@@ -13,6 +15,7 @@ const Country = require("./src/models/Country");
 const Destination = require("./src/models/Destinations");
 const Itinerary = require("./src/models/Itinerary");
 const FavoriteItinerary = require("./src/models/FavoriteItinerary");
+const Tag = require("./src/models/Tag");
 
 const {
   errorHandler,
@@ -51,6 +54,8 @@ sequelize
     console.log("Model synchronized with the database");
     addCountries();
     setTimeout(addCities, 2000);
+    setTimeout(addTags, 2000);
+    setTimeout(addTagsToDestinations, 2000);
     app.listen(port, () => {
       console.log(`Express server running at http://localhost:${port}/api/v1/`);
     });

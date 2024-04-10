@@ -1,5 +1,6 @@
 const { DataTypes } = require("sequelize");
 const sequelize = require("../../config/sequelizeConfig");
+const Tag = require("./Tag");
 
 const Destination = sequelize.define(
   "Destination",
@@ -29,5 +30,8 @@ const Destination = sequelize.define(
     paranoid: true,
   }
 );
+
+Destination.belongsToMany(Tag, { through: "DestinationTag" });
+Tag.belongsToMany(Destination, { through: "DestinationTag" });
 
 module.exports = Destination;
