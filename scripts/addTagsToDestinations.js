@@ -13,7 +13,7 @@ async function addTagsToDestinations() {
         "gastronomy",
       ],
       valencia: ["sightseeing", "beach", "science", "gastronomy", "parks"],
-      sevilla: ["sightseeing", "flamenco", "history", "gastronomy", "markets"],
+      seville: ["sightseeing", "flamenco", "history", "gastronomy", "markets"],
       malaga: ["beach", "sunbathing", "foodie", "nightlife", "shopping"],
       bilbao: ["museums", "art", "architecture", "gastronomy", "parks"],
       granada: [
@@ -31,7 +31,7 @@ async function addTagsToDestinations() {
         "nightlife",
         "gastronomy",
       ],
-      lisboa: ["sightseeing", "history", "foodie", "nightlife", "markets"],
+      lisbon: ["sightseeing", "history", "foodie", "nightlife", "markets"],
       oporto: ["wine", "sightseeing", "architecture", "gastronomy", "markets"],
       faro: ["beach", "sightseeing", "nature", "gastronomy", "markets"],
       coimbra: ["university", "history", "architecture", "gastronomy", "parks"],

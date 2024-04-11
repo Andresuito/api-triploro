@@ -2,7 +2,9 @@ const nodemailer = require("nodemailer");
 
 const sendVerificationEmail = async (email, verificationToken) => {
   const transporter = nodemailer.createTransport({
-    service: "Gmail",
+    host: process.env.MAIL_HOST,
+    port: process.env.MAIL_PORT,
+    secure: true,
     auth: {
       user: process.env.MAIL_USERNAME,
       pass: process.env.MAIL_PASSWORD,
@@ -16,9 +18,12 @@ const sendVerificationEmail = async (email, verificationToken) => {
   }/verify-email?token=${verificationToken}`;
 
   const mailOptions = {
-    from: process.env.MAIL_USERNAME,
+    from: {
+      name: "Triploro",
+      address: process.env.MAIL_USERNAME,
+    },
     to: email,
-    subject: "¡Bienvenido a TripLoro! Por favor, verifica tu cuenta",
+    subject: "¡Bienvenido a Triploro! Por favor, verifica tu cuenta",
     html: `
       <div style="font-family: Arial, sans-serif; margin: 0 auto; max-width: 600px; padding: 20px; border: 1px solid #ddd; border-radius: 5px;">
         <div style="text-align: center;">

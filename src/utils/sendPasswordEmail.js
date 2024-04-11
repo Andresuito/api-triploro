@@ -2,7 +2,9 @@ const nodemailer = require("nodemailer");
 
 const sendPasswordEmail = async (email, passwordToken) => {
   const transporter = nodemailer.createTransport({
-    service: "Gmail",
+    host: process.env.MAIL_HOST,
+    port: process.env.MAIL_PORT,
+    secure: true,
     auth: {
       user: process.env.MAIL_USERNAME,
       pass: process.env.MAIL_PASSWORD,
@@ -16,7 +18,10 @@ const sendPasswordEmail = async (email, passwordToken) => {
   }/reset-password?token=${passwordToken}`;
 
   const mailOptions = {
-    from: process.env.MAIL_USERNAME,
+    from: {
+      name: "Triploro",
+      address: process.env.MAIL_USERNAME,
+    },
     to: email,
     subject: "Restablecer contraseña - Triploro",
     html: `

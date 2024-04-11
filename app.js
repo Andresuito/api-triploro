@@ -55,7 +55,7 @@ sequelize
     addCountries();
     setTimeout(addCities, 2000);
     setTimeout(addTags, 2000);
-    setTimeout(addTagsToDestinations, 2000);
+    setTimeout(addTagsToDestinations, 3000);
     app.listen(port, () => {
       console.log(`Express server running at http://localhost:${port}/api/v1/`);
     });
