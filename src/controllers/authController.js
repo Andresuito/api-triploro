@@ -22,7 +22,7 @@ exports.register = async (req, res) => {
 
     const verificationToken = generateTokenEmail(email);
 
-    await sendVerificationEmail(email, verificationToken);
+    await sendVerificationEmail(username, email, verificationToken);
 
     res.status(201).json({ message: "success" });
   } catch (error) {

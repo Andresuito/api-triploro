@@ -27,7 +27,7 @@ const sendPasswordEmail = async (email, passwordToken) => {
     html: `
       <div style="font-family: Arial, sans-serif; margin: 0 auto; max-width: 600px; padding: 20px; border: 1px solid #ddd; border-radius: 5px;">
         <div style="text-align: center;">
-          <img src="https://yourwebsite.com/logo.png" alt="Logo" style="height: 50px;"/>
+          <img src="https://triploro.es/img/logo.jpg" alt="Logo" style="height: 50px;"/>
         </div>
         <h2 style="color: #333; text-align: center;">Restablecer contraseña</h2>
         <p style="color: #555; text-align: center;">Haz clic en el botón de abajo para restablecer tu contraseña.</p>

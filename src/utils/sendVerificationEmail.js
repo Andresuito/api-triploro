@@ -1,6 +1,6 @@
 const nodemailer = require("nodemailer");
 
-const sendVerificationEmail = async (email, verificationToken) => {
+const sendVerificationEmail = async (username, email, verificationToken) => {
   const transporter = nodemailer.createTransport({
     host: process.env.MAIL_HOST,
     port: process.env.MAIL_PORT,
@@ -17,28 +17,151 @@ const sendVerificationEmail = async (email, verificationToken) => {
       : process.env.CORS_ORIGIN_PROD
   }/verify-email?token=${verificationToken}`;
 
+  const htmlContent = `
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&display=swap"
+      rel="stylesheet"
+    />
+    <title></title>
+  </head>
+  <body>
+    <div
+      style="
+        font-family: 'Plus Jakarta Sans', sans-serif;
+        background-color: #ffffff;
+        margin: 0 auto;
+        max-width: 698px;
+        padding: 20px;
+        border-radius: 5px;
+      "
+    >
+      <div style="text-align: left">
+        <img
+          src="https://triploro.es/img/logo.jpg"
+          alt="Logo"
+          style="height: auto; width: 100%; max-width: 115px; max-height: 30px"
+        />
+      </div>
+      <div style="padding: 20px">
+        <h2
+          style="
+            color: #033156;
+            text-align: center;
+            font-weight: 600;
+            font-size: 30px;
+            margin: 16px auto;
+          "
+        >
+          Hi ${username}
+        </h2>
+      </div>
+        <div
+          style="
+            text-align: center;
+          "
+        >
+          <img src="https://triploro.es/img/under_nav.png" alt="Welcome" style="margin: auto;" />
+        </div>
+      <div style="padding: 32px; text-align: center">
+        <h1 style="font-size: 30px; color: #033156; margin: 16px auto">
+          Verify your email to get started
+        </h1>
+        <a href="${verificationUrl}"
+          style="
+            display: inline-block;
+            background-color: #033156;
+            border-radius: 12px;
+            padding: 10px 40px;
+            color: #ffffff;
+            font-size: 16px;
+            font-weight: 600;
+            margin: 16px auto;
+            line-height: 24px;
+            cursor: pointer;
+            border: none;
+            text-decoration: none;
+          "
+        >
+          Get Started
+        </a>
+        <p style="margin: 16px auto; font-size: 14px">
+          If you're having trouble clicking the button, verify your email with
+          this link instead:
+          <span style="color: #333333; opacity: 50%">${verificationUrl}</span>
+        </p>
+        <hr
+        style="width: 420px; opacity: 20%; color: #033156; margin: 16px auto"
+      />
+      <h1
+        style="
+          font-size: 20px;
+          color: #000000;
+          opacity: 50%;
+          margin: 16px auto;
+        "
+      >
+        Plan your next travel and share with the world.
+      </h1>
+      <div
+        style="
+          max-width: 397px;
+          margin: 0 auto;
+          font-size: 14px;
+          opacity: 65%;
+          color: #333333;
+        "
+      >
+        <p style="margin: 16px auto">
+          Discover our curated selection of itineraries for your upcoming
+          travels, or create your own to share with the community.
+        </p>
+        <p style="margin: 16px auto">
+          Found an almost perfect itinerary that needs a personal touch? Adopt
+          community-shared itineraries through Triploro and customize them to
+          your preferences.
+        </p>
+        <p style="margin: 16px auto">
+          With Triploro, you can craft every trip to be uniquely yours, and
+          share it with the world.
+        </p>
+      </div>
+      <hr
+        style="width: 420px; opacity: 20%; color: #033156; margin: 16px auto"
+      />
+      <p
+        style="
+          color: #333333;
+          opacity: 50%;
+          margin: 16px auto;
+          font-size: 12px;
+        "
+      >
+        www.triploro.com
+      </p>
+      <p style="color: #999999; margin: 16px auto; font-size: 12px">
+        Copyright © 2024
+      </p>
+    </div>
+  </div>
+</body>
+</html>
+`;
+
   const mailOptions = {
     from: {
       name: "Triploro",
       address: process.env.MAIL_USERNAME,
     },
     to: email,
-    subject: "¡Bienvenido a Triploro! Por favor, verifica tu cuenta",
-    html: `
-      <div style="font-family: Arial, sans-serif; margin: 0 auto; max-width: 600px; padding: 20px; border: 1px solid #ddd; border-radius: 5px;">
-        <div style="text-align: center;">
-          <img src="https://yourwebsite.com/logo.png" alt="Logo" style="height: 50px;"/>
-        </div>
-        <h2 style="color: #333; text-align: center;">¡Bienvenido a TripLoro!</h2>
-        <p style="color: #555; text-align: center;">Estamos emocionados de tenerte con nosotros. Por favor, verifica tu cuenta haciendo clic en el botón de abajo.</p>
-        <div style="text-align: center; margin: 20px 0;">
-          <a href="${verificationUrl}" style="display: inline-block; background-color: #007bff; color: #fff; text-decoration: none; padding: 10px 20px; border-radius: 5px;">Verificar mi cuenta</a>
-        </div>
-        <p style="color: #555; text-align: center;">¡Gracias y bienvenido!</p>
-        <hr style="border: none; border-top: 1px solid #ddd;">
-        <p style="color: #777; font-size: 0.8em; text-align: center;">Si tienes problemas para hacer clic en el botón "Verificar mi cuenta", copia y pega la URL a continuación en tu navegador web: ${verificationUrl}</p>
-      </div>
-    `,
+    subject: `¡Bienvenido a Triploro ${username} ! Por favor, verifica tu cuenta`,
+    html: htmlContent,
   };
   try {
     await transporter.sendMail(mailOptions);

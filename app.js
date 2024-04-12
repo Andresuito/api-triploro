@@ -36,11 +36,11 @@ const corsOptions = {
   allowedHeaders: ["Content-Type", "Authorization"],
   credentials: true,
 };
-
 app.use(cors(corsOptions));
 app.use(express.json());
 app.use(cookieParser());
 
+app.use("/img", express.static("img"));
 app.use("/api/v1", require("./src/routes"));
 
 app.use(errorHandler);

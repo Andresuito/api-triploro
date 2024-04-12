@@ -25,8 +25,6 @@ exports.updateUsername = async (req, res) => {
       return res.status(400).json({ error: "invalid_name" });
     }
 
-    console.log(username);
-
     if (!user) {
       return res.status(404).json({ error: "user_not_found" });
     }
