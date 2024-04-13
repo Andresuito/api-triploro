@@ -1,6 +1,16 @@
 const Destinations = require("../models/Destinations");
 const Countries = require("../models/Country");
 
+exports.getAllDestinations = async (req, res) => {
+  try {
+    const destinations = await Destinations.findAll();
+    res.json(destinations);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "server_error" });
+  }
+};
+
 exports.getDestinationsByName = async (req, res) => {
   try {
     const { name } = req.params;

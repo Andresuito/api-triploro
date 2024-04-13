@@ -1,6 +1,7 @@
 const User = require("../models/User");
 const jwt = require("jsonwebtoken");
 const block_username = require("../utils/blacklist/block_username");
+const block_email = require("../utils/blacklist/block_email");
 
 const {
   generateToken,
@@ -14,11 +15,16 @@ const sendPasswordResetEmail = require("../utils/sendPasswordResetEmail");
 exports.register = async (req, res) => {
   try {
     const { email, username, password } = req.body;
-    await User.create({ email, username, password });
+
+    if (block_email.includes(email.split("@")[1])) {
+      return res.status(400).json({ error: "invalid_email" });
+    }
 
     if (block_username.includes(username)) {
       return res.status(400).json({ error: "invalid_name" });
     }
+
+    await User.create({ email, username, password });
 
     const verificationToken = generateTokenEmail(email);
 
@@ -33,7 +39,6 @@ exports.register = async (req, res) => {
     res.status(500).json({ error: "server_error" });
   }
 };
-
 exports.login = async (req, res) => {
   try {
     const { email, password: loginPassword } = req.body;
