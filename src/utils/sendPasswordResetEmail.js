@@ -17,6 +17,147 @@ const sendPasswordResetEmail = async (email, passwordToken) => {
       : process.env.CORS_ORIGIN_PROD
   }/reset-password?token=${passwordToken}`;
 
+  const htmlContent = `
+  <!DOCTYPE html>
+  <html lang="en">
+    <head>
+      <meta charset="UTF-8" />
+      <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      <link rel="preconnect" href="https://fonts.googleapis.com" />
+      <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+      <link
+        href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&display=swap"
+        rel="stylesheet"
+      />
+      <title></title>
+      <style>
+        @media only screen and (max-width: 600px) {
+          .hr {
+            max-width: 100% !important;
+          }
+        }
+      </style>
+    </head>
+    <body>
+      <div
+        style="
+          font-family: 'Plus Jakarta Sans', sans-serif;
+          background-color: #ffffff;
+          margin: 0 auto;
+          max-width: 698px;
+          padding: 20px;
+        "
+      >
+        <div style="text-align: left">
+          <img
+            src="https://triploro.es/img/logo.jpg"
+            alt="Logo"
+            style="height: auto; width: 100%; max-width: 115px; max-height: 30px"
+          />
+        </div>
+        <div style="max-width: 634px; text-align: center">
+          <div>
+            <h2
+              style="
+                color: #033156;
+                text-align: center;
+                font-weight: 600;
+                font-size: 30px;
+                margin: 16px auto;
+              "
+            >
+              Password Reset
+            </h2>
+          </div>
+          <p
+            style="
+              color: #333333;
+              margin: 16px auto;
+              text-align: center;
+              font-size: 14px;
+            "
+          >
+            If you wish to reset your password, click the button below.
+          </p>
+          <div style="text-align: center">
+            <a
+              href="${verificationUrl}"
+              style="
+                display: inline-block;
+                background-color: #033156;
+                border-radius: 12px;
+                padding: 10px 40px;
+                color: #ffffff;
+                font-size: 16px;
+                font-weight: 600;
+                margin: 16px auto;
+                line-height: 24px;
+                cursor: pointer;
+                border: none;
+                text-decoration: none;
+              "
+            >
+              Reset my password
+            </a>
+            <p style="margin: 16px auto; font-size: 14px">
+              If you're having trouble clicking the button, you can reset your
+              password <br />
+              with this link instead: <br />
+              <span style="color: #333333; opacity: 50%">${verificationUrl}</span>
+            </p>
+            <hr
+              class="hr"
+              style="
+                max-width: 420px;
+                opacity: 20%;
+                color: #033156;
+                margin: 16px auto;
+              "
+            />
+            <div
+              style="
+                max-width: 484px;
+                margin: 0 auto;
+                font-size: 14px;
+                opacity: 65%;
+                color: #333333;
+              "
+            >
+              <p style="margin: 16px auto">
+                If you did not request a password reset, you can safely ignore
+                this email. Only a person with access to your email can reset your
+                account password.
+              </p>
+            </div>
+            <hr
+              class="hr"
+              style="
+                max-width: 420px;
+                opacity: 20%;
+                color: #033156;
+                margin: 16px auto;
+              "
+            />
+            <p
+              style="
+                color: #333333;
+                opacity: 50%;
+                margin: 16px auto;
+                font-size: 14px;
+              "
+            >
+              www.triploro.com
+            </p>
+            <p style="color: #999999; margin: 16px auto; font-size: 12px">
+              Copyright © 2024
+            </p>
+          </div>
+        </div>
+      </div>
+    </body>
+  </html>  
+  `;
+
   const mailOptions = {
     from: {
       name: "Triploro",
@@ -24,24 +165,7 @@ const sendPasswordResetEmail = async (email, passwordToken) => {
     },
     to: email,
     subject: "Restablecer contraseña olvidada - Triploro",
-    html: `
-      <div style="font-family: Arial, sans-serif; margin: 0 auto; max-width: 600px; padding: 20px; border: 1px solid #ddd; border-radius: 5px;">
-        <div style="text-align: center;">
-          <img src="https://triploro.es/img/logo.jpg" alt="Logo" style="height: 50px;"/>
-        </div>
-        <h2 style="color: #333; text-align: center;">Restablecer contraseña</h2>
-        <p style="color: #555; text-align: center;">Haz clic en el botón de abajo para restablecer tu contraseña.</p>
-        <div style="text-align: center; margin: 20px 0;">
-          <a href="${passwordUrl}" style="display: inline-block; background-color: #007bff; color: #fff; text-decoration: none; padding: 10px 20px; border-radius: 5px;">Restablecer contraseña</a>
-        </div>
-        <p style="color: #555; text-align: center;">¡Gracias!</p>
-        <hr style="border: none; border-top: 1px solid #ddd;">
-        <p style="color: #777; font-size: 0.8em; text-align: center;">Si tienes problemas para hacer clic en el botón "Restablecer contraseña", copia y pega la URL a continuación en tu navegador web: ${passwordUrl}</p>
-        <div style="background-color: orange; color: black; font-size: 0.8em; text-align: center; margin-top: 20px; padding: 5px; border-radius: 5px;">
-        <p>Si no has solicitado un restablecimiento de contraseña, puedes ignorar este correo electrónico o eliminarlo.</p>
-        </div>
-      </div>
-    `,
+    html: htmlContent,
   };
   try {
     await transporter.sendMail(mailOptions);

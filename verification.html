@@ -10,8 +10,21 @@
       rel="stylesheet"
     />
     <title></title>
+    <style>
+      @media only screen and (max-width: 600px) {
+        .container {
+          padding: 14px !important;
+        }
+        .hr {
+          max-width: 100% !important;
+        }
+        .title {
+          font-size: 24px !important;
+        }
+      }
+    </style>
   </head>
-  <body>
+  <body style="margin: 0; padding: 0">
     <div
       style="
         font-family: 'Plus Jakarta Sans', sans-serif;
@@ -19,6 +32,8 @@
         margin: 0 auto;
         max-width: 698px;
         padding: 20px;
+        text-align: center;
+        display: block;
       "
     >
       <div style="text-align: left">
@@ -42,35 +57,15 @@
         </h2>
       </div>
       <div style="text-align: center; position: relative">
-        <img src="./img/under_nav.png" alt="Welcome" style="margin: auto" />
         <img
-          src="./img/logo_white.png"
-          alt="Logo white"
-          style="
-            margin: auto;
-            position: absolute;
-            top: 15%;
-            left: 10%;
-            width: 107px;
-          "
+          src="https://www.triploro.es/img/under_nav.png"
+          alt="Welcome"
+          style="margin: auto; width: 100%; text-align: center"
         />
-        <p
-          style="
-            text-align: left;
-            position: absolute;
-            top: 45%;
-            left: 10%;
-            font-weight: 500;
-            font-size: 24px;
-            color: #ffffff;
-          "
-        >
-          Welcome to Triploro! <br />
-          We are thrilled to have you join our community.
-        </p>
       </div>
-      <div style="padding: 32px; text-align: center">
+      <div class="container" style="padding: 32px; text-align: center">
         <h1
+          class="title"
           style="
             font-size: 30px;
             color: #033156;
@@ -105,7 +100,13 @@
           <span style="color: #333333; opacity: 50%">${verificationUrl}</span>
         </p>
         <hr
-          style="width: 420px; opacity: 20%; color: #033156; margin: 16px auto"
+          class="hr"
+          style="
+            max-width: 420px;
+            opacity: 20%;
+            color: #033156;
+            margin: 16px auto;
+          "
         />
         <h1
           style="
@@ -141,7 +142,13 @@
           </p>
         </div>
         <hr
-          style="width: 420px; opacity: 20%; color: #033156; margin: 16px auto"
+          class="hr"
+          style="
+            max-width: 420px;
+            opacity: 20%;
+            color: #033156;
+            margin: 16px auto;
+          "
         />
         <p
           style="
