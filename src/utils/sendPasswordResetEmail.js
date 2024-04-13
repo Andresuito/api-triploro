@@ -81,7 +81,7 @@ const sendPasswordResetEmail = async (email, passwordToken) => {
           </p>
           <div style="text-align: center">
             <a
-              href="${verificationUrl}"
+              href="${passwordUrl}"
               style="
                 display: inline-block;
                 background-color: #033156;
@@ -103,7 +103,7 @@ const sendPasswordResetEmail = async (email, passwordToken) => {
               If you're having trouble clicking the button, you can reset your
               password <br />
               with this link instead: <br />
-              <span style="color: #333333; opacity: 50%">${verificationUrl}</span>
+              <span style="color: #333333; opacity: 50%">${passwordUrl}</span>
             </p>
             <hr
               class="hr"
