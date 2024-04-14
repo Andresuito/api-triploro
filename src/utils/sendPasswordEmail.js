@@ -50,7 +50,7 @@ const sendPasswordEmail = async (email, passwordToken) => {
       >
         <div style="text-align: left">
           <img
-            src="https://triploro.es/img/logo.jpg"
+            src="https://triploro.es/img/logo.png"
             alt="Logo"
             style="height: auto; width: 100%; max-width: 115px; max-height: 30px"
           />

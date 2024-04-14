@@ -58,7 +58,7 @@ const sendVerificationEmail = async (username, email, verificationToken) => {
       >
         <div style="text-align: left">
           <img
-            src="https://triploro.es/img/logo.jpg"
+            src="https://triploro.es/img/logo.png"
             alt="Logo"
             style="height: auto; width: 100%; max-width: 115px; max-height: 30px"
           />
@@ -78,7 +78,7 @@ const sendVerificationEmail = async (username, email, verificationToken) => {
         </div>
         <div style="text-align: center">
           <img
-            src="https://www.triploro.es/img/welcome.png"
+            src="https://www.triploro.es/img/new_user.png"
             alt="Welcome"
             style="margin: auto; width: 100%; text-align: center"
           />
