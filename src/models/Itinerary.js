@@ -13,23 +13,23 @@ const Itinerary = sequelize.define(
     },
     description: {
       type: DataTypes.TEXT,
-      allowNull: false,
+      allowNull: true,
     },
     duration: {
       type: DataTypes.INTEGER,
-      allowNull: false,
+      allowNull: true,
     },
     startDate: {
       type: DataTypes.DATE,
-      allowNull: false,
+      allowNull: true,
     },
     endDate: {
       type: DataTypes.DATE,
-      allowNull: false,
+      allowNull: true,
     },
     season: {
       type: DataTypes.ENUM("Spring", "Summer", "Autumn", "Winter"),
-      allowNull: false,
+      allowNull: true,
     },
     notes: {
       type: DataTypes.TEXT,

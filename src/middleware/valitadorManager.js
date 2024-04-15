@@ -18,6 +18,8 @@ const bodyLoginValidator = [
 ];
 
 const bodyRegisterValidator = [
+  body("name", "name_empty").trim().notEmpty(),
+  body("surname", "surname_empty").trim().notEmpty(),
   body("email", "invalid_email_format").trim().isEmail().normalizeEmail(),
   body("username", "username_empty").trim().notEmpty(),
   body("password", "password_length").trim().isLength({ min: 6 }),

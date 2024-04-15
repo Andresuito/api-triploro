@@ -1,6 +1,6 @@
 const nodemailer = require("nodemailer");
 
-const sendVerificationEmail = async (username, email, verificationToken) => {
+const sendVerificationEmail = async (name, email, verificationToken) => {
   const transporter = nodemailer.createTransport({
     host: process.env.MAIL_HOST,
     port: process.env.MAIL_PORT,
@@ -73,7 +73,7 @@ const sendVerificationEmail = async (username, email, verificationToken) => {
               margin: 16px auto;
             "
           >
-            Hi ${username},
+            Hi ${name},
           </h2>
         </div>
         <div style="text-align: center">
@@ -195,7 +195,7 @@ const sendVerificationEmail = async (username, email, verificationToken) => {
       address: process.env.MAIL_USERNAME,
     },
     to: email,
-    subject: `¡Bienvenido a Triploro ${username} ! Por favor, verifica tu cuenta`,
+    subject: `¡Bienvenido a Triploro ${name} ! Por favor, verifica tu cuenta`,
     html: htmlContent,
   };
   try {

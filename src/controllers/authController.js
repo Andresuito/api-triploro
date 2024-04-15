@@ -14,7 +14,7 @@ const sendPasswordResetEmail = require("../utils/sendPasswordResetEmail");
 
 exports.register = async (req, res) => {
   try {
-    const { email, username, password } = req.body;
+    const { name, surname, email, username, password } = req.body;
 
     if (block_email.includes(email.split("@")[1])) {
       return res.status(400).json({ error: "invalid_email" });
@@ -24,11 +24,11 @@ exports.register = async (req, res) => {
       return res.status(400).json({ error: "invalid_name" });
     }
 
-    await User.create({ email, username, password });
+    await User.create({ name, surname, email, username, password });
 
     const verificationToken = generateTokenEmail(email);
 
-    await sendVerificationEmail(username, email, verificationToken);
+    await sendVerificationEmail(name, email, verificationToken);
 
     res.status(201).json({ message: "success" });
   } catch (error) {

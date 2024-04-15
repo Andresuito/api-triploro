@@ -21,6 +21,14 @@ const User = sequelize.define(
       type: DataTypes.STRING,
       allowNull: false,
     },
+    name: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
+    surname: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
     receiveNewsletter: {
       type: DataTypes.BOOLEAN,
       defaultValue: true,
