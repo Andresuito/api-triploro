@@ -11,6 +11,7 @@ const addTagsToDestinations = require("./scripts/addTagsToDestinations.js");
 
 /* Models */
 const User = require("./src/models/User");
+const Friendship = require("./src/models/Friendship");
 const Country = require("./src/models/Country");
 const Destination = require("./src/models/Destinations");
 const Itinerary = require("./src/models/Itinerary");

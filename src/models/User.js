@@ -62,6 +62,13 @@ User.prototype.comparePassword = async function (password) {
   return await bcrypt.compare(password, this.password);
 };
 
+User.belongsToMany(User, {
+  as: "friends",
+  through: "Friendship",
+  foreignKey: "userId",
+  otherKey: "friendId",
+});
+
 User.hasMany(FavoriteItinerary, { foreignKey: "userId" });
 User.hasMany(PersonalItinerary, { foreignKey: "userId" });
 
