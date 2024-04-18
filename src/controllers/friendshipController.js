@@ -5,15 +5,20 @@ const { Op } = require("sequelize");
 exports.searchUsersByUsername = async (req, res) => {
   try {
     const { username } = req.query;
-    const users = await User.findAll({
+    const user = await User.findOne({
       where: {
         username: {
-          [Op.like]: `%${username}%`,
+          [Op.eq]: username,
         },
       },
       attributes: ["id", "username"],
     });
-    res.json({ users });
+
+    if (!user) {
+      return res.status(404).json({ error: "user_not_found" });
+    }
+
+    res.json({ user });
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: "server_error" });
