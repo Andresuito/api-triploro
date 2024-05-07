@@ -6,8 +6,6 @@ exports.createItinerary = async (req, res) => {
     const userId = req.user.id;
     const { code, city, days, startDate, endDate } = req.body;
 
-    console.log(req.body);
-
     const userItineraries = await PersonalItinerary.count({
       where: { userId },
     });
@@ -26,6 +24,30 @@ exports.createItinerary = async (req, res) => {
     await PersonalItinerary.create({ userId, itineraryId: itinerary.id });
 
     res.status(201).json(itinerary);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "server_error" });
+  }
+};
+
+exports.getAllUserItineraries = async (req, res) => {
+  try {
+    const userId = req.user.id;
+
+    const personalItineraries = await PersonalItinerary.findAll({
+      where: { userId },
+    });
+    if (!personalItineraries) {
+      return res.status(404).json({ error: "itineraries_not_found" });
+    }
+
+    const itineraries = await Promise.all(
+      personalItineraries.map(async (personalItinerary) => {
+        return await Itinerary.findByPk(personalItinerary.itineraryId);
+      })
+    );
+
+    res.json(itineraries);
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: "server_error" });
