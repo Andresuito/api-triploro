@@ -7,7 +7,7 @@ const Tag = require("./Tag");
 const Itinerary = sequelize.define(
   "Itinerary",
   {
-    name: {
+    code: {
       type: DataTypes.STRING,
       allowNull: false,
     },
@@ -15,7 +15,11 @@ const Itinerary = sequelize.define(
       type: DataTypes.TEXT,
       allowNull: true,
     },
-    duration: {
+    city: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
+    days: {
       type: DataTypes.INTEGER,
       allowNull: true,
     },

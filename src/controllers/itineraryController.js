@@ -4,12 +4,9 @@ const PersonalItinerary = require("../models/PersonalItinerary");
 exports.createItinerary = async (req, res) => {
   try {
     const userId = req.user.id;
-    const { name } = req.body;
+    const { code, city, days, startDate, endDate } = req.body;
 
-    const existingItinerary = await Itinerary.findOne({ where: { name } });
-    if (existingItinerary) {
-      return res.status(400).json({ error: "name_taken" });
-    }
+    console.log(req.body);
 
     const userItineraries = await PersonalItinerary.count({
       where: { userId },
@@ -18,7 +15,13 @@ exports.createItinerary = async (req, res) => {
       return res.status(400).json({ error: "user_has_max_itineraries" });
     }
 
-    const itinerary = await Itinerary.create({ name });
+    const itinerary = await Itinerary.create({
+      code,
+      city,
+      days,
+      startDate,
+      endDate,
+    });
 
     await PersonalItinerary.create({ userId, itineraryId: itinerary.id });
 
