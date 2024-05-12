@@ -42,6 +42,7 @@ app.use(express.json());
 app.use(cookieParser());
 
 app.use("/img", express.static("img"));
+app.use("/uploads", express.static("uploads"));
 app.use("/api/v1", require("./src/routes"));
 
 app.use(errorHandler);
