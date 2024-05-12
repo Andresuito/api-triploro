@@ -1,5 +1,23 @@
+const multer = require("multer");
+const fs = require("fs");
+const path = require("path");
+
 const Itinerary = require("../models/Itinerary");
 const PersonalItinerary = require("../models/PersonalItinerary");
+
+const storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    const dir = `uploads/${req.user.id}/${req.params.code}`;
+    fs.mkdirSync(dir, { recursive: true });
+    cb(null, dir);
+  },
+  filename: function (req, file, cb) {
+    const ext = path.extname(file.originalname);
+    cb(null, `cover${ext}`);
+  },
+});
+
+const upload = multer({ storage: storage });
 
 exports.createItinerary = async (req, res) => {
   try {
@@ -77,3 +95,34 @@ exports.getItineraryByCode = async (req, res) => {
     res.status(500).json({ error: "server_error" });
   }
 };
+
+exports.updateItineraryImage = [
+  upload.single("image"),
+  async (req, res) => {
+    try {
+      const userId = req.user.id;
+      const { code } = req.params;
+
+      const itinerary = await Itinerary.findOne({ where: { code } });
+      if (!itinerary) {
+        return res.status(404).json({ error: "itinerary_not_found" });
+      }
+
+      const personalItinerary = await PersonalItinerary.findOne({
+        where: { userId, itineraryId: itinerary.id },
+      });
+      if (!personalItinerary) {
+        return res.status(403).json({ error: "forbidden" });
+      }
+
+      const ext = path.extname(req.file.originalname);
+      itinerary.imageUrl = `/uploads/${userId}/${code}/cover${ext}`;
+      await itinerary.save();
+
+      res.json(itinerary);
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ error: "server_error" });
+    }
+  },
+];
