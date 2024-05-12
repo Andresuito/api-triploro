@@ -31,6 +31,10 @@ const Itinerary = sequelize.define(
       type: DataTypes.DATE,
       allowNull: true,
     },
+    imageUrl: {
+      type: DataTypes.STRING,
+      allowNull: true,
+    },
     season: {
       type: DataTypes.ENUM("Spring", "Summer", "Autumn", "Winter"),
       allowNull: true,
