@@ -96,7 +96,22 @@ exports.getItineraryByCode = async (req, res) => {
   }
 };
 
+const deleteExistingCover = async (req, res, next) => {
+  const dir = `uploads/${req.user.id}/${req.params.code}`;
+  if (fs.existsSync(dir)) {
+    const files = fs.readdirSync(dir);
+    for (const file of files) {
+      const basename = path.basename(file, path.extname(file));
+      if (basename === "cover") {
+        fs.unlinkSync(path.join(dir, file));
+      }
+    }
+  }
+  next();
+};
+
 exports.updateItineraryImage = [
+  deleteExistingCover,
   upload.single("image"),
   async (req, res) => {
     try {
@@ -113,6 +128,10 @@ exports.updateItineraryImage = [
       });
       if (!personalItinerary) {
         return res.status(403).json({ error: "forbidden" });
+      }
+
+      if (!req.file) {
+        return res.status(400).json({ error: "no_file_uploaded" });
       }
 
       const ext = path.extname(req.file.originalname);
