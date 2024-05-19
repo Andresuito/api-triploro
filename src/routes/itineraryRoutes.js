@@ -6,7 +6,7 @@ const itineraryController = require("../controllers/itineraryController");
 router.get("/allPublic", itineraryController.getAllItinerariesPublic);
 router.post("/create", requiresToken, itineraryController.createItinerary);
 router.get("/user/:userId", requiresToken, itineraryController.getAllUserItineraries);
-router.get("/:code", requiresToken, itineraryController.getItineraryByCode);
+router.get("/:code", itineraryController.getItineraryByCode);
 router.patch("/update/image/:code", requiresToken, itineraryController.updateItineraryImage);
 router.post("/favorite/:code", requiresToken, itineraryController.favoriteItinerary);
 

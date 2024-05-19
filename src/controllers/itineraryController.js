@@ -88,7 +88,6 @@ exports.getAllUserItineraries = async (req, res) => {
 
 exports.getItineraryByCode = async (req, res) => {
   try {
-    const userId = req.user.id;
     const { code } = req.params;
 
     const itinerary = await Itinerary.findOne({ where: { code } });
@@ -96,11 +95,21 @@ exports.getItineraryByCode = async (req, res) => {
       return res.status(404).json({ error: "itinerary_not_found" });
     }
 
+    if (itinerary.public == 1) {
+      return res.json(itinerary);
+    }
+
+    if (!req.user) {
+      return res.status(404).json({ error: "itinerary_not_found" });
+    }
+
+    const userId = req.user.id;
     const personalItinerary = await PersonalItinerary.findOne({
       where: { userId, itineraryId: itinerary.id },
     });
+
     if (!personalItinerary) {
-      return res.status(403).json({ error: "forbidden" });
+      return res.status(404).json({ error: "itinerary_not_found" });
     }
 
     res.json(itinerary);
