@@ -19,6 +19,20 @@ const storage = multer.diskStorage({
 
 const upload = multer({ storage: storage });
 
+exports.getAllItinerariesPublic = async (req, res) => {
+  try {
+    const itineraries = await Itinerary.findAll({
+      where: {
+        public: 1,
+      },
+    });
+    res.json(itineraries);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "server_error" });
+  }
+};
+
 exports.createItinerary = async (req, res) => {
   try {
     const userId = req.user.id;
@@ -145,3 +159,30 @@ exports.updateItineraryImage = [
     }
   },
 ];
+
+exports.favoriteItinerary = async (req, res) => {
+  try {
+    const userId = req.user.id;
+    const { code } = req.params;
+
+    const itinerary = await Itinerary.findOne({ where: { code } });
+    if (!itinerary) {
+      return res.status(404).json({ error: "itinerary_not_found" });
+    }
+
+    const personalItinerary = await PersonalItinerary.findOne({
+      where: { userId, itineraryId: itinerary.id },
+    });
+    if (!personalItinerary) {
+      return res.status(403).json({ error: "forbidden" });
+    }
+
+    itinerary.favorite = !itinerary.favorite;
+    await itinerary.save();
+
+    res.json(itinerary);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "server_error" });
+  }
+};
