@@ -4,6 +4,7 @@ const path = require("path");
 
 const Itinerary = require("../models/Itinerary");
 const PersonalItinerary = require("../models/PersonalItinerary");
+const FavoriteItinerary = require("../models/FavoriteItinerary");
 
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
@@ -88,6 +89,30 @@ exports.getAllUserItineraries = async (req, res) => {
 
 exports.getItineraryByCode = async (req, res) => {
   try {
+    const userId = req.user.id;
+    const { code } = req.params;
+
+    const itinerary = await Itinerary.findOne({ where: { code } });
+    if (!itinerary) {
+      return res.status(404).json({ error: "itinerary_not_found" });
+    }
+
+    const personalItinerary = await PersonalItinerary.findOne({
+      where: { userId, itineraryId: itinerary.id },
+    });
+    if (!personalItinerary) {
+      return res.status(403).json({ error: "forbidden" });
+    }
+
+    res.json(itinerary);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "server_error" });
+  }
+};
+
+exports.getItineraryByCodePublic = async (req, res) => {
+  try {
     const { code } = req.params;
 
     const itinerary = await Itinerary.findOne({ where: { code } });
@@ -96,7 +121,11 @@ exports.getItineraryByCode = async (req, res) => {
     }
 
     if (itinerary.public == 1) {
-      return res.json(itinerary);
+      const fullItinerary = await Itinerary.findOne({
+        where: { code },
+        include: [{ all: true }],
+      });
+      return res.json(fullItinerary);
     }
 
     if (!req.user) {
@@ -169,6 +198,30 @@ exports.updateItineraryImage = [
   },
 ];
 
+exports.getFavoriteItineraries = async (req, res) => {
+  try {
+    const userId = req.user.id;
+
+    console.log(userId);
+
+    const favoriteItineraries = await FavoriteItinerary.findAll({
+      where: { userId },
+      include: {
+        model: Itinerary,
+        as: "itinerary",
+        where: { public: 1 },
+      },
+    });
+
+    const itineraries = favoriteItineraries.map((fav) => fav.itinerary);
+
+    res.json(itineraries);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "server_error" });
+  }
+};
+
 exports.favoriteItinerary = async (req, res) => {
   try {
     const userId = req.user.id;
@@ -179,16 +232,64 @@ exports.favoriteItinerary = async (req, res) => {
       return res.status(404).json({ error: "itinerary_not_found" });
     }
 
-    const personalItinerary = await PersonalItinerary.findOne({
-      where: { userId, itineraryId: itinerary.id },
+    const favoriteItinerary = await FavoriteItinerary.findOne({
+      where: { userId, code: itinerary.id },
     });
-    if (!personalItinerary) {
-      return res.status(403).json({ error: "forbidden" });
+
+    if (favoriteItinerary) {
+      await favoriteItinerary.destroy();
+    } else {
+      await FavoriteItinerary.create({ userId, code: itinerary.id });
     }
 
-    itinerary.favorite = !itinerary.favorite;
-    await itinerary.save();
+    res.json(itinerary);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "server_error" });
+  }
+};
 
+exports.checkFavorite = async (req, res) => {
+  try {
+    const userId = req.user.id;
+    const { code } = req.params;
+
+    const itinerary = await Itinerary.findOne({ where: { code } });
+    if (!itinerary) {
+      return res.status(404).json({ error: "Itinerary not found" });
+    }
+    const itineraryId = itinerary.id;
+
+    const favorite = await FavoriteItinerary.findOne({
+      where: { userId, code: itineraryId },
+    });
+
+    res.json({ isFavorite: !!favorite });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "server_error" });
+  }
+};
+
+exports.deleteFavoriteItinerary = async (req, res) => {
+  try {
+    const userId = req.user.id;
+    const { code } = req.params;
+
+    const itinerary = await Itinerary.findOne({ where: { code } });
+    if (!itinerary) {
+      return res.status(404).json({ error: "itinerary_not_found" });
+    }
+    const itineraryId = itinerary.id;
+
+    const favoriteItinerary = await FavoriteItinerary.findOne({
+      where: { userId, code: itineraryId },
+    });
+    if (!favoriteItinerary) {
+      return res.status(404).json({ error: "favorite_not_found" });
+    }
+
+    await favoriteItinerary.destroy({ force: true });
     res.json(itinerary);
   } catch (error) {
     console.error(error);

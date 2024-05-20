@@ -8,13 +8,13 @@ const FavoriteItinerary = sequelize.define(
       type: DataTypes.INTEGER,
       allowNull: false,
     },
-    itineraryId: {
+    code: {
       type: DataTypes.INTEGER,
       allowNull: false,
     },
   },
   {
-    paranoid: true,
+    paranoid: false,
   }
 );
 

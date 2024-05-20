@@ -4,10 +4,12 @@ const cors = require("cors");
 const morgan = require("morgan");
 const cookieParser = require("cookie-parser");
 const sequelize = require("./config/sequelizeConfig");
+const addUsers = require("./scripts/addFakeUsers.js");
 const addCountries = require("./scripts/addCountries");
 const addCities = require("./scripts/addCities");
 const addTags = require("./scripts/addTags");
 const addTagsToDestinations = require("./scripts/addTagsToDestinations.js");
+const createFakeItineraries = require("./scripts/addItineraries.js");
 
 /* Models */
 const User = require("./src/models/User");
@@ -54,10 +56,12 @@ sequelize
   .sync()
   .then(() => {
     console.log("Model synchronized with the database");
+    addUsers();
     addCountries();
     setTimeout(addCities, 2000);
     setTimeout(addTags, 2000);
     setTimeout(addTagsToDestinations, 3000);
+    setTimeout(createFakeItineraries, 3000);
     app.listen(port, () => {
       console.log(`Express server running at http://localhost:${port}/api/v1/`);
     });

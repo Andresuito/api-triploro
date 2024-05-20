@@ -56,8 +56,8 @@ const Itinerary = sequelize.define(
 Itinerary.belongsToMany(Tag, { through: "ItineraryTag" });
 Tag.belongsToMany(Itinerary, { through: "ItineraryTag" });
 
-Itinerary.hasMany(FavoriteItinerary, { foreignKey: "itineraryId" });
-FavoriteItinerary.belongsTo(Itinerary, { foreignKey: "itineraryId" });
+Itinerary.hasMany(FavoriteItinerary, { foreignKey: "code", as: 'favoriteItineraries' });
+FavoriteItinerary.belongsTo(Itinerary, { foreignKey: "code", as: 'itinerary' });
 PersonalItinerary.belongsTo(Itinerary, { foreignKey: "itineraryId" });
 
 module.exports = Itinerary;
