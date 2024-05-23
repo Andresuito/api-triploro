@@ -11,8 +11,13 @@ function generateCode() {
 }
 
 async function createFakeItineraries(numItineraries = 20) {
-  const seasons = ["Spring", "Summer", "Autumn", "Winter"];
+  const existingItineraries = await Itinerary.findAll();
+  if (existingItineraries && existingItineraries.length > 0) {
+    console.log("Itineraries already exist, no need to create more.");
+    return;
+  }
 
+  const seasons = ["Spring", "Summer", "Autumn", "Winter"];
   const destinations = await Destination.findAll();
 
   for (let i = 0; i < numItineraries; i++) {

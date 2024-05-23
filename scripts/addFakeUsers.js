@@ -42,6 +42,11 @@ function getRandomPassword() {
 }
 
 async function addFakeUsers(numUsers = 10) {
+  const existingUsers = await User.findAll();
+  if (existingUsers && existingUsers.length > 0) {
+    console.log("Users already exist, no need to create more.");
+    return;
+  }
   for (let i = 0; i < numUsers; i++) {
     const name = getRandomElement(names);
     const surname = getRandomElement(surnames);

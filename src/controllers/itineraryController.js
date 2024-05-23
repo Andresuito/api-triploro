@@ -22,11 +22,17 @@ const upload = multer({ storage: storage });
 
 exports.getAllItinerariesPublic = async (req, res) => {
   try {
+    const limit = req.query.limit ? parseInt(req.query.limit) : 20;
+    const offset = req.query.offset ? parseInt(req.query.offset) : 0;
+
     const itineraries = await Itinerary.findAll({
       where: {
         public: 1,
       },
+      limit: limit,
+      offset: offset,
     });
+
     res.json(itineraries);
   } catch (error) {
     console.error(error);
@@ -92,19 +98,33 @@ exports.getItineraryByCode = async (req, res) => {
     const userId = req.user.id;
     const { code } = req.params;
 
-    const itinerary = await Itinerary.findOne({ where: { code } });
+    const itinerary = await Itinerary.findOne({
+      where: { code },
+      include: [
+        {
+          model: PersonalItinerary,
+          as: "personalItineraries",
+          where: { userId },
+          required: false,
+        },
+      ],
+    });
+
     if (!itinerary) {
       return res.status(404).json({ error: "itinerary_not_found" });
     }
 
-    const personalItinerary = await PersonalItinerary.findOne({
-      where: { userId, itineraryId: itinerary.id },
-    });
-    if (!personalItinerary) {
+    const isOwner =
+      itinerary.personalItineraries && itinerary.personalItineraries.length > 0;
+
+    if (!isOwner) {
       return res.status(403).json({ error: "forbidden" });
     }
 
-    res.json(itinerary);
+    res.json({
+      ...itinerary.toJSON(),
+      isOwner,
+    });
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: "server_error" });
@@ -115,33 +135,44 @@ exports.getItineraryByCodePublic = async (req, res) => {
   try {
     const { code } = req.params;
 
-    const itinerary = await Itinerary.findOne({ where: { code } });
+    const itinerary = await Itinerary.findOne({
+      where: { code },
+    });
+
     if (!itinerary) {
       return res.status(404).json({ error: "itinerary_not_found" });
     }
 
-    if (itinerary.public == 1) {
+    let isOwner = false;
+    if (itinerary.public) {
       const fullItinerary = await Itinerary.findOne({
         where: { code },
         include: [{ all: true }],
       });
-      return res.json(fullItinerary);
+      return res.json({
+        ...fullItinerary.toJSON(),
+        isOwner,
+      });
     }
 
-    if (!req.user) {
-      return res.status(404).json({ error: "itinerary_not_found" });
+    if (req.user) {
+      const userId = req.user.id;
+      const personalItinerary = await PersonalItinerary.findOne({
+        where: { userId, itineraryId: itinerary.id },
+      });
+
+      isOwner = !!personalItinerary;
     }
 
-    const userId = req.user.id;
-    const personalItinerary = await PersonalItinerary.findOne({
-      where: { userId, itineraryId: itinerary.id },
+    const fullItinerary = await Itinerary.findOne({
+      where: { code },
+      include: [{ all: true }],
     });
 
-    if (!personalItinerary) {
-      return res.status(404).json({ error: "itinerary_not_found" });
-    }
-
-    res.json(itinerary);
+    res.json({
+      ...fullItinerary.toJSON(),
+      isOwner,
+    });
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: "server_error" });
