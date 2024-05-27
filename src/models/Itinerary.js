@@ -10,6 +10,7 @@ const Itinerary = sequelize.define(
     code: {
       type: DataTypes.STRING,
       allowNull: false,
+      unique: true,
     },
     description: {
       type: DataTypes.TEXT,
@@ -58,9 +59,14 @@ Tag.belongsToMany(Itinerary, { through: "ItineraryTag" });
 
 Itinerary.hasMany(FavoriteItinerary, {
   foreignKey: "code",
+  sourceKey: "code",
   as: "favoriteItineraries",
 });
-FavoriteItinerary.belongsTo(Itinerary, { foreignKey: "code", as: "itinerary" });
+FavoriteItinerary.belongsTo(Itinerary, {
+  foreignKey: "code",
+  targetKey: "code",
+  as: "itinerary",
+});
 
 Itinerary.hasMany(PersonalItinerary, {
   foreignKey: "itineraryId",
