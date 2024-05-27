@@ -264,19 +264,19 @@ exports.favoriteItinerary = async (req, res) => {
     }
 
     const favoriteItinerary = await FavoriteItinerary.findOne({
-      where: { userId, code: itinerary.id },
+      where: { userId, code: itinerary.code },
     });
 
     if (favoriteItinerary) {
       await favoriteItinerary.destroy();
+      return res.json({ message: "Favorite removed" });
     } else {
-      await FavoriteItinerary.create({ userId, code: itinerary.id });
+      await FavoriteItinerary.create({ userId, code: itinerary.code });
+      return res.json({ message: "Favorite added" });
     }
-
-    res.json(itinerary);
   } catch (error) {
     console.error(error);
-    res.status(500).json({ error: "server_error" });
+    return res.status(500).json({ error: "server_error" });
   }
 };
 
@@ -287,18 +287,17 @@ exports.checkFavorite = async (req, res) => {
 
     const itinerary = await Itinerary.findOne({ where: { code } });
     if (!itinerary) {
-      return res.status(404).json({ error: "Itinerary not found" });
+      return res.status(404).json({ error: "itinerary_not_found" });
     }
-    const itineraryId = itinerary.id;
 
     const favorite = await FavoriteItinerary.findOne({
-      where: { userId, code: itineraryId },
+      where: { userId, code: itinerary.code },
     });
 
-    res.json({ isFavorite: !!favorite });
+    return res.json({ isFavorite: !!favorite });
   } catch (error) {
     console.error(error);
-    res.status(500).json({ error: "server_error" });
+    return res.status(500).json({ error: "server_error" });
   }
 };
 
@@ -311,19 +310,18 @@ exports.deleteFavoriteItinerary = async (req, res) => {
     if (!itinerary) {
       return res.status(404).json({ error: "itinerary_not_found" });
     }
-    const itineraryId = itinerary.id;
 
     const favoriteItinerary = await FavoriteItinerary.findOne({
-      where: { userId, code: itineraryId },
+      where: { userId, code: itinerary.code },
     });
     if (!favoriteItinerary) {
       return res.status(404).json({ error: "favorite_not_found" });
     }
 
-    await favoriteItinerary.destroy({ force: true });
-    res.json(itinerary);
+    await favoriteItinerary.destroy();
+    return res.json({ message: "Favorite removed successfully" });
   } catch (error) {
     console.error(error);
-    res.status(500).json({ error: "server_error" });
+    return res.status(500).json({ error: "server_error" });
   }
 };
