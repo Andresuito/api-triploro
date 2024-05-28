@@ -22,15 +22,10 @@ const upload = multer({ storage: storage });
 
 exports.getAllItinerariesPublic = async (req, res) => {
   try {
-    const limit = req.query.limit ? parseInt(req.query.limit) : 20;
-    const offset = req.query.offset ? parseInt(req.query.offset) : 0;
-
     const itineraries = await Itinerary.findAll({
       where: {
         public: 1,
       },
-      limit: limit,
-      offset: offset,
     });
 
     res.json(itineraries);
@@ -76,7 +71,8 @@ exports.getAllUserItineraries = async (req, res) => {
     const personalItineraries = await PersonalItinerary.findAll({
       where: { userId },
     });
-    if (!personalItineraries) {
+
+    if (!personalItineraries.length) {
       return res.status(404).json({ error: "itineraries_not_found" });
     }
 
@@ -95,8 +91,8 @@ exports.getAllUserItineraries = async (req, res) => {
 
 exports.getItineraryByCode = async (req, res) => {
   try {
-    const userId = req.user.id;
     const { code } = req.params;
+    const userId = req.user ? req.user.id : null;
 
     const itinerary = await Itinerary.findOne({
       where: { code },
@@ -104,7 +100,7 @@ exports.getItineraryByCode = async (req, res) => {
         {
           model: PersonalItinerary,
           as: "personalItineraries",
-          where: { userId },
+          where: userId ? { userId } : {},
           required: false,
         },
       ],
@@ -116,14 +112,16 @@ exports.getItineraryByCode = async (req, res) => {
 
     const isOwner =
       itinerary.personalItineraries && itinerary.personalItineraries.length > 0;
+    const isPublic = itinerary.public;
 
-    if (!isOwner) {
+    if (!isOwner && !isPublic) {
       return res.status(403).json({ error: "forbidden" });
     }
 
     res.json({
       ...itinerary.toJSON(),
       isOwner,
+      isPublic,
     });
   } catch (error) {
     console.error(error);
@@ -136,43 +134,14 @@ exports.getItineraryByCodePublic = async (req, res) => {
     const { code } = req.params;
 
     const itinerary = await Itinerary.findOne({
-      where: { code },
+      where: { code, public: 1 },
     });
 
     if (!itinerary) {
       return res.status(404).json({ error: "itinerary_not_found" });
     }
 
-    let isOwner = false;
-    if (itinerary.public) {
-      const fullItinerary = await Itinerary.findOne({
-        where: { code },
-        include: [{ all: true }],
-      });
-      return res.json({
-        ...fullItinerary.toJSON(),
-        isOwner,
-      });
-    }
-
-    if (req.user) {
-      const userId = req.user.id;
-      const personalItinerary = await PersonalItinerary.findOne({
-        where: { userId, itineraryId: itinerary.id },
-      });
-
-      isOwner = !!personalItinerary;
-    }
-
-    const fullItinerary = await Itinerary.findOne({
-      where: { code },
-      include: [{ all: true }],
-    });
-
-    res.json({
-      ...fullItinerary.toJSON(),
-      isOwner,
-    });
+    res.json(itinerary);
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: "server_error" });
@@ -232,8 +201,6 @@ exports.updateItineraryImage = [
 exports.getFavoriteItineraries = async (req, res) => {
   try {
     const userId = req.user.id;
-
-    console.log(userId);
 
     const favoriteItineraries = await FavoriteItinerary.findAll({
       where: { userId },
@@ -323,5 +290,33 @@ exports.deleteFavoriteItinerary = async (req, res) => {
   } catch (error) {
     console.error(error);
     return res.status(500).json({ error: "server_error" });
+  }
+};
+
+exports.updateItineraryPublic = async (req, res) => {
+  try {
+    const userId = req.user.id;
+    const { code } = req.params;
+    const { public } = req.body;
+
+    const itinerary = await Itinerary.findOne({ where: { code } });
+    if (!itinerary) {
+      return res.status(404).json({ error: "itinerary_not_found" });
+    }
+
+    const personalItinerary = await PersonalItinerary.findOne({
+      where: { userId, itineraryId: itinerary.id },
+    });
+    if (!personalItinerary) {
+      return res.status(403).json({ error: "forbidden" });
+    }
+
+    itinerary.public = public;
+    await itinerary.save();
+
+    res.json({ message: "update_state_itinerary" });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "server_error" });
   }
 };

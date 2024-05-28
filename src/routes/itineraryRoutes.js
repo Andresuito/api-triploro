@@ -13,5 +13,6 @@ router.get("/favorites/:userId", requiresToken, itineraryController.getFavoriteI
 router.post("/favorite/:code", requiresToken, itineraryController.favoriteItinerary);
 router.get("/favorite/:code", requiresToken, itineraryController.checkFavorite);
 router.delete("/favorite/:code", requiresToken, itineraryController.deleteFavoriteItinerary);
+router.patch("/public/:code", requiresToken, itineraryController.updateItineraryPublic);
 
 module.exports = router;

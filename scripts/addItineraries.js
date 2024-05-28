@@ -10,7 +10,7 @@ function generateCode() {
   return code;
 }
 
-async function createFakeItineraries(numItineraries = 20) {
+async function createFakeItineraries(numItineraries = 100) {
   const existingItineraries = await Itinerary.findAll();
   if (existingItineraries && existingItineraries.length > 0) {
     console.log("Itineraries already exist, no need to create more.");

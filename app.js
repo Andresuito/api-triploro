@@ -11,7 +11,6 @@ const addTags = require("./scripts/addTags");
 const addTagsToDestinations = require("./scripts/addTagsToDestinations.js");
 const createFakeItineraries = require("./scripts/addItineraries.js");
 
-/* Models */
 const User = require("./src/models/User");
 const Friendship = require("./src/models/Friendship");
 const Country = require("./src/models/Country");
