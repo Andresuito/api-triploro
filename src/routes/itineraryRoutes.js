@@ -14,5 +14,6 @@ router.post("/favorite/:code", requiresToken, itineraryController.favoriteItiner
 router.get("/favorite/:code", requiresToken, itineraryController.checkFavorite);
 router.delete("/favorite/:code", requiresToken, itineraryController.deleteFavoriteItinerary);
 router.patch("/public/:code", requiresToken, itineraryController.updateItineraryPublic);
+router.delete("/:code", requiresToken, itineraryController.deleteItinerary);
 
 module.exports = router;
