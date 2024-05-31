@@ -1,6 +1,7 @@
 const multer = require("multer");
 const fs = require("fs");
 const path = require("path");
+const rimraf = require("rimraf");
 
 const Itinerary = require("../models/Itinerary");
 const PersonalItinerary = require("../models/PersonalItinerary");
@@ -35,10 +36,41 @@ exports.getAllItinerariesPublic = async (req, res) => {
   }
 };
 
+exports.deleteItinerary = async (req, res) => {
+  try {
+    const userId = req.user.id;
+    const { code } = req.params;
+
+    const itinerary = await Itinerary.findOne({ where: { code } });
+    if (!itinerary) {
+      return res.status(404).json({ error: "itinerary_not_found" });
+    }
+
+    const personalItinerary = await PersonalItinerary.findOne({
+      where: { userId, itineraryId: itinerary.id },
+    });
+    if (!personalItinerary) {
+      return res.status(403).json({ error: "forbidden" });
+    }
+
+    await personalItinerary.destroy({ force: true });
+    await itinerary.destroy({ force: true });
+
+    const dir = `uploads/${userId}/${code}`;
+    rimraf.sync(dir);
+
+    res.json({ message: "delete_itinerary" });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "server_error" });
+  }
+};
+
 exports.createItinerary = async (req, res) => {
   try {
     const userId = req.user.id;
-    const { code, city, days, startDate, endDate } = req.body;
+    const { code, city, days, startDate, endDate, latitude, longitude } =
+      req.body;
 
     const userItineraries = await PersonalItinerary.count({
       where: { userId },
@@ -53,6 +85,8 @@ exports.createItinerary = async (req, res) => {
       days,
       startDate,
       endDate,
+      latitude,
+      longitude,
     });
 
     await PersonalItinerary.create({ userId, itineraryId: itinerary.id });
