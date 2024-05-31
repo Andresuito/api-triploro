@@ -48,6 +48,14 @@ const Itinerary = sequelize.define(
       type: DataTypes.BOOLEAN,
       defaultValue: false,
     },
+    latitude: {
+      type: DataTypes.DECIMAL(10, 8),
+      allowNull: false,
+    },
+    longitude: {
+      type: DataTypes.DECIMAL(11, 8),
+      allowNull: false,
+    },
   },
   {
     paranoid: true,
