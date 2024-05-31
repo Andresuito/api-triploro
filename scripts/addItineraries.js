@@ -23,9 +23,14 @@ async function createFakeItineraries(numItineraries = 100) {
   for (let i = 0; i < numItineraries; i++) {
     const code = generateCode();
     const description = `Itinerary ${i}`;
+    const randomDestinationIndex = Math.floor(
+      Math.random() * destinations.length
+    );
     const city =
-      destinations[i % destinations.length].name.charAt(0).toUpperCase() +
-      destinations[i % destinations.length].name.slice(1);
+      destinations[randomDestinationIndex].name.charAt(0).toUpperCase() +
+      destinations[randomDestinationIndex].name.slice(1).toLowerCase(); // Convertir el nombre de la ciudad a mayúsculas
+    const latitude = destinations[randomDestinationIndex].latitude;
+    const longitude = destinations[randomDestinationIndex].longitude;
     const days = Math.floor(Math.random() * 14) + 1;
     const startDate = new Date();
     const endDate = new Date();
@@ -46,6 +51,8 @@ async function createFakeItineraries(numItineraries = 100) {
       season,
       notes,
       public,
+      latitude,
+      longitude,
     };
 
     try {
