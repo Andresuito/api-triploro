@@ -6,6 +6,7 @@ const rimraf = require("rimraf");
 const Itinerary = require("../models/Itinerary");
 const PersonalItinerary = require("../models/PersonalItinerary");
 const FavoriteItinerary = require("../models/FavoriteItinerary");
+const Activity = require("../models/Activity");
 
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
@@ -41,6 +42,7 @@ exports.getAllItinerariesPublic = async (req, res) => {
     res.status(500).json({ error: "server_error" });
   }
 };
+
 exports.deleteItinerary = async (req, res) => {
   try {
     const userId = req.user.id;
@@ -58,6 +60,13 @@ exports.deleteItinerary = async (req, res) => {
       return res.status(403).json({ error: "forbidden" });
     }
 
+    const activities = await Activity.findAll({
+      where: { itineraryId: itinerary.id },
+    });
+    for (let activity of activities) {
+      await activity.destroy({ force: true });
+    }
+
     await personalItinerary.destroy({ force: true });
     await itinerary.destroy({ force: true });
 
@@ -70,7 +79,6 @@ exports.deleteItinerary = async (req, res) => {
     res.status(500).json({ error: "server_error" });
   }
 };
-
 exports.createItinerary = async (req, res) => {
   try {
     const userId = req.user.id;
