@@ -23,10 +23,16 @@ const upload = multer({ storage: storage });
 
 exports.getAllItinerariesPublic = async (req, res) => {
   try {
+    const page = parseInt(req.query.page) || 1;
+    const limit = parseInt(req.query.limit) || 10;
+    const offset = (page - 1) * limit;
+
     const itineraries = await Itinerary.findAll({
       where: {
         public: 1,
       },
+      limit: limit,
+      offset: offset,
     });
 
     res.json(itineraries);
@@ -35,7 +41,6 @@ exports.getAllItinerariesPublic = async (req, res) => {
     res.status(500).json({ error: "server_error" });
   }
 };
-
 exports.deleteItinerary = async (req, res) => {
   try {
     const userId = req.user.id;
