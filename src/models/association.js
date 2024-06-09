@@ -2,7 +2,6 @@ module.exports = function (
   User,
   Invitation,
   Itinerary,
-  Tag,
   FavoriteItinerary,
   PersonalItinerary
 ) {
@@ -17,9 +16,6 @@ module.exports = function (
     foreignKey: "itineraryId",
     as: "itinerary",
   });
-
-  Itinerary.belongsToMany(Tag, { through: "ItineraryTag" });
-  Tag.belongsToMany(Itinerary, { through: "ItineraryTag" });
 
   Itinerary.hasMany(FavoriteItinerary, {
     foreignKey: "code",

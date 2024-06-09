@@ -15,7 +15,6 @@ const Country = require("./src/models/Country");
 const Destination = require("./src/models/Destinations");
 const FavoriteItinerary = require("./src/models/FavoriteItinerary");
 const PersonalItinerary = require("./src/models/PersonalItinerary");
-const Tag = require("./src/models/Tag");
 
 const setAssociations = require("./src/models/association");
 
@@ -50,7 +49,6 @@ setAssociations(
   User,
   Invitation,
   Itinerary,
-  Tag,
   FavoriteItinerary,
   PersonalItinerary
 );
@@ -61,7 +59,7 @@ app.use(notFoundHandler);
 const port = process.env.PORT || 8000;
 
 sequelize
-  .sync({ force: true })
+  .sync()
   .then(() => {
     console.log("Model synchronized with the database");
     addCountries();
