@@ -73,13 +73,13 @@ const sendVerificationEmail = async (name, email, verificationToken) => {
               margin: 16px auto;
             "
           >
-            Hi ${name},
+            Hola ${name},
           </h2>
         </div>
         <div style="text-align: center">
           <img
             src="https://www.triploro.es/img/new_user.png"
-            alt="Welcome"
+            alt="Bienvenido"
             style="margin: auto; width: 100%; text-align: center"
           />
         </div>
@@ -93,7 +93,7 @@ const sendVerificationEmail = async (name, email, verificationToken) => {
               font-weight: 600;
             "
           >
-            Verify your email to get started
+            Verifica tu correo electrónico para comenzar
           </h1>
           <a
             href="${verificationUrl}"
@@ -112,11 +112,11 @@ const sendVerificationEmail = async (name, email, verificationToken) => {
               text-decoration: none;
             "
           >
-            Get Started
+            Comenzar
           </a>
           <p style="margin: 16px auto; font-size: 14px">
-            If you're having trouble clicking the button, verify your email with
-            this link instead:
+            Si tienes problemas para hacer clic en el botón, verifica tu correo electrónico con
+            este enlace en su lugar:
             <span style="color: #333333; opacity: 50%">${verificationUrl}</span>
           </p>
           <hr
@@ -136,7 +136,7 @@ const sendVerificationEmail = async (name, email, verificationToken) => {
               margin: 16px auto;
             "
           >
-            Plan your next travel and share with the world.
+            Planea tu próximo viaje y compártelo con el mundo.
           </h1>
           <div
             style="
@@ -148,17 +148,17 @@ const sendVerificationEmail = async (name, email, verificationToken) => {
             "
           >
             <p style="margin: 16px auto">
-              Discover our curated selection of itineraries for your upcoming
-              travels, or create your own to share with the community.
+              Descubre nuestra selección curada de itinerarios para tus próximos
+              viajes, o crea el tuyo propio para compartir con la comunidad.
             </p>
             <p style="margin: 16px auto">
-              Found an almost perfect itinerary that needs a personal touch? Adopt
-              community-shared itineraries through Triploro and customize them to
-              your preferences.
+              ¿Encontraste un itinerario casi perfecto que necesita un toque personal? Adopta
+              itinerarios compartidos por la comunidad a través de Triploro y personalízalos a
+              tus preferencias.
             </p>
             <p style="margin: 16px auto">
-              With Triploro, you can craft every trip to be uniquely yours, and
-              share it with the world.
+              Con Triploro, puedes hacer que cada viaje sea único y
+              compartirlo con el mundo.
             </p>
           </div>
           <hr

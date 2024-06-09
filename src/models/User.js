@@ -1,8 +1,6 @@
 const { DataTypes } = require("sequelize");
 const bcrypt = require("bcrypt");
 const sequelize = require("../../config/sequelizeConfig");
-const FavoriteItinerary = require("./FavoriteItinerary");
-const PersonalItinerary = require("./PersonalItinerary");
 
 const User = sequelize.define(
   "User",
@@ -61,15 +59,5 @@ const User = sequelize.define(
 User.prototype.comparePassword = async function (password) {
   return await bcrypt.compare(password, this.password);
 };
-
-User.belongsToMany(User, {
-  as: "friends",
-  through: "Friendship",
-  foreignKey: "userId",
-  otherKey: "friendId",
-});
-
-User.hasMany(FavoriteItinerary, { foreignKey: "userId" });
-User.hasMany(PersonalItinerary, { foreignKey: "userId" });
 
 module.exports = User;

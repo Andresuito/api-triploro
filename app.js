@@ -11,12 +11,15 @@ const addTags = require("./scripts/addTags");
 const addTagsToDestinations = require("./scripts/addTagsToDestinations.js");
 const createFakeItineraries = require("./scripts/addItineraries.js");
 
+// Importar modelos
 const User = require("./src/models/User");
+const Itinerary = require("./src/models/Itinerary");
+const Invitation = require("./src/models/Invitation");
 const Friendship = require("./src/models/Friendship");
 const Country = require("./src/models/Country");
 const Destination = require("./src/models/Destinations");
-const Itinerary = require("./src/models/Itinerary");
 const FavoriteItinerary = require("./src/models/FavoriteItinerary");
+const PersonalItinerary = require("./src/models/PersonalItinerary");
 const Tag = require("./src/models/Tag");
 
 const {
@@ -45,6 +48,42 @@ app.use(cookieParser());
 app.use("/img", express.static("img"));
 app.use("/uploads", express.static("uploads"));
 app.use("/api/v1", require("./src/routes"));
+
+User.hasMany(Invitation, { foreignKey: "userId", as: "invitations" });
+Invitation.belongsTo(User, { foreignKey: "userId", as: "inviter" });
+
+Itinerary.hasMany(Invitation, { foreignKey: "itineraryId", as: "invitations" });
+Invitation.belongsTo(Itinerary, { foreignKey: "itineraryId", as: "itinerary" });
+
+Itinerary.belongsToMany(Tag, { through: "ItineraryTag" });
+Tag.belongsToMany(Itinerary, { through: "ItineraryTag" });
+
+Itinerary.hasMany(FavoriteItinerary, {
+  foreignKey: "code",
+  sourceKey: "code",
+  as: "favoriteItineraries",
+});
+FavoriteItinerary.belongsTo(Itinerary, {
+  foreignKey: "code",
+  targetKey: "code",
+  as: "itinerary",
+});
+
+Itinerary.hasMany(PersonalItinerary, {
+  foreignKey: "itineraryId",
+  as: "personalItineraries",
+});
+PersonalItinerary.belongsTo(Itinerary, { foreignKey: "itineraryId" });
+
+User.belongsToMany(User, {
+  as: "friends",
+  through: "Friendship",
+  foreignKey: "userId",
+  otherKey: "friendId",
+});
+
+User.hasMany(FavoriteItinerary, { foreignKey: "userId" });
+User.hasMany(PersonalItinerary, { foreignKey: "userId" });
 
 app.use(errorHandler);
 app.use(notFoundHandler);

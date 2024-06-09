@@ -38,7 +38,7 @@ const sendPasswordEmail = async (email, passwordToken) => {
         }
       </style>
     </head>
-    <body>
+   <body>
       <div
         style="
           font-family: 'Plus Jakarta Sans', sans-serif;
@@ -66,7 +66,7 @@ const sendPasswordEmail = async (email, passwordToken) => {
                 margin: 16px auto;
               "
             >
-              Password Reset
+              Restablecimiento de Contraseña
             </h2>
           </div>
           <p
@@ -77,7 +77,7 @@ const sendPasswordEmail = async (email, passwordToken) => {
               font-size: 14px;
             "
           >
-            If you wish to reset your password, click the button below.
+            Si deseas restablecer tu contraseña, haz clic en el botón de abajo.
           </p>
           <div style="text-align: center">
             <a
@@ -97,12 +97,11 @@ const sendPasswordEmail = async (email, passwordToken) => {
                 text-decoration: none;
               "
             >
-              Reset my password
+              Restablecer mi contraseña
             </a>
             <p style="margin: 16px auto; font-size: 14px">
-              If you're having trouble clicking the button, you can reset your
-              password <br />
-              with this link instead: <br />
+              Si tienes problemas para hacer clic en el botón, puedes restablecer tu
+              contraseña con este enlace en su lugar: <br />
               <span style="color: #333333; opacity: 50%">${passwordUrl}</span>
             </p>
             <hr
@@ -124,9 +123,8 @@ const sendPasswordEmail = async (email, passwordToken) => {
               "
             >
               <p style="margin: 16px auto">
-                If you did not request a password reset, you can safely ignore
-                this email. Only a person with access to your email can reset your
-                account password.
+                Si no solicitaste un restablecimiento de contraseña, puedes ignorar
+                este correo electrónico de manera segura. Solo una persona con acceso a tu correo electrónico puede restablecer la contraseña de tu cuenta.
               </p>
             </div>
             <hr

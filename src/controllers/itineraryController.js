@@ -7,6 +7,7 @@ const Itinerary = require("../models/Itinerary");
 const PersonalItinerary = require("../models/PersonalItinerary");
 const FavoriteItinerary = require("../models/FavoriteItinerary");
 const Activity = require("../models/Activity");
+const Invitation = require("../models/Invitation");
 
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
@@ -150,6 +151,12 @@ exports.getItineraryByCode = async (req, res) => {
           where: userId ? { userId } : {},
           required: false,
         },
+        {
+          model: Invitation,
+          as: "invitations",
+          where: { userId, status: "accepted" },
+          required: false,
+        },
       ],
     });
 
@@ -160,8 +167,12 @@ exports.getItineraryByCode = async (req, res) => {
     const isOwner =
       itinerary.personalItineraries && itinerary.personalItineraries.length > 0;
     const isPublic = itinerary.public;
+    const hasAcceptedInvitation =
+      itinerary.invitations && itinerary.invitations.length > 0;
 
-    if (!isOwner && !isPublic) {
+    console.log(hasAcceptedInvitation);
+
+    if (!isOwner && !isPublic && !hasAcceptedInvitation) {
       return res.status(403).json({ error: "forbidden" });
     }
 
@@ -169,6 +180,7 @@ exports.getItineraryByCode = async (req, res) => {
       ...itinerary.toJSON(),
       isOwner,
       isPublic,
+      hasAcceptedInvitation,
     });
   } catch (error) {
     console.error(error);
