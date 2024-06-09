@@ -27,7 +27,6 @@ exports.getInvites = async (req, res) => {
 exports.getItineraryInvitationsAccepted = async (req, res) => {
   try {
     const { id } = req.user;
-    console.log(id);
 
     const invitations = await Invitation.findAll({
       where: {
@@ -39,8 +38,6 @@ exports.getItineraryInvitationsAccepted = async (req, res) => {
         as: "itinerary",
       },
     });
-
-    console.log(invitations);
 
     res.json(invitations);
   } catch (error) {
