@@ -27,14 +27,6 @@ const User = sequelize.define(
       type: DataTypes.STRING,
       allowNull: false,
     },
-    receiveNewsletter: {
-      type: DataTypes.BOOLEAN,
-      defaultValue: true,
-    },
-    receiveNewDestination: {
-      type: DataTypes.BOOLEAN,
-      defaultValue: true,
-    },
     isActivated: {
       type: DataTypes.BOOLEAN,
       allowNull: false,
