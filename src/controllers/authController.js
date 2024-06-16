@@ -11,6 +11,7 @@ const {
 
 const sendVerificationEmail = require("../utils/sendVerificationEmail");
 const sendPasswordResetEmail = require("../utils/sendPasswordResetEmail");
+const resendCoreVerification = require("../utils/resendCodeVerification");
 
 exports.register = async (req, res) => {
   try {
@@ -142,6 +143,27 @@ exports.changePassword = async (req, res) => {
     await user.save();
 
     res.status(200).json({ message: "password_changed_successfully" });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "server_error" });
+  }
+};
+
+exports.resendCodeVerification = async (req, res) => {
+  try {
+    const { email } = req.body;
+
+    const user = await User.findOne({ where: { email } });
+
+    if (!user) {
+      return res.status(404).json({ error: "user_not_found" });
+    }
+
+    const verificationToken = generateTokenEmail(email);
+
+    await resendCoreVerification(user.name, email, verificationToken);
+
+    res.status(200).json({ message: "verification_email_sent" });
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: "server_error" });

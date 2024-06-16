@@ -1,3 +1,4 @@
+// app.js
 const express = require("express");
 const dotenv = require("dotenv");
 const cors = require("cors");
@@ -64,10 +65,16 @@ sequelize
     console.log("Model synchronized with the database");
     addCountries();
     setTimeout(addCities, 2000);
-    app.listen(port, () => {
-      console.log(`Express server running at http://localhost:${port}/api/v1/`);
-    });
+    if (require.main === module) {
+      app.listen(port, () => {
+        console.log(
+          `Express server running at http://localhost:${port}/api/v1/`
+        );
+      });
+    }
   })
   .catch((err) => {
     console.error("Error synchronizing the model with the database:", err);
   });
+
+module.exports = app;
